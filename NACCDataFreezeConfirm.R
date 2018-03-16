@@ -81,6 +81,7 @@ D1_cp$ftldnos <- as.integer(D1_cp$ftldnos)
 class(D1_cp$cvd)
 D1_cp$cvd <- as.integer(D1_cp$cvd)
 
+# Participants have how many diagnoses?
 D1_cp %>% 
   filter(demented == 1) %>% 
   select(ptid, redcap_event_name, alzdis, lbdis, msa, psp, cort, ftldmo, 
@@ -301,6 +302,20 @@ D1_C2 %>%
   select(ptid, dx, minttots) %>% 
   group_by(dx) %>% 
   summarize(n = n())
+table(D1_C2$dx, D1_C2[["mocatots"]]) %>% 
+  rowSums(.)
+tests <- list("mocatots", "minttots", "craftvrs", "crafturs", "craftdvr",
+              "craftdre", "udsbentc", "udsbentd", "digforct", "digbacct",
+              "animals_c2", "veg_c2", "traila_c2", "trailb_c2", "udsverfc",
+              "udsverlc")
+# lapply(X = tests, FUN = function(x) { 
+#   table(D1_C2$dx, D1_C2[[x]]) 
+# })
+sapply(X = tests, FUN = function(x) { 
+  table(D1_C2$dx, D1_C2[[x]]) %>% rowSums(.) 
+  })
+
+
 table(D1_C2$normcog, D1_C2$mocaabst)[1, ]
 sum(table(D1_C2$normcog, D1_C2$mocatots)[1, ])
 sum(table(D1_C2$normcog, D1_C2$mocatots)[2, ])
